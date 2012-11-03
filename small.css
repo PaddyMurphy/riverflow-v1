@@ -1,0 +1,7 @@
+#wrapper {width:580px;margin:0 auto;}
+#images {display:block;width:100%;height:auto;overflow: auto;overflow-y: hidden;}
+.arrow {display:none;}
+#header {float:none;width:450px;}
+#formRiver {text-align:center;}
+#main {border:none;float:none;margin:0 auto;width:576px;}
+#images {text-align:center;}
