@@ -5,7 +5,7 @@
  */
 (function($){
 var flowApp = {
-		
+
 	config : {
 		siteId : "",
 		riverLocation : "",
@@ -26,7 +26,7 @@ var flowApp = {
 		flickrURL : "",
 		resizeStyle : ""
 	}, // END config
-	
+
 	configP : {
     	proxy : 'ba-simple-proxy.php',
 		baseURL : "http://waterservices.usgs.gov/nwis/iv/?format=json&sites=",
@@ -53,17 +53,17 @@ var flowApp = {
 		flow4 : 'Now we\'re talking! The river is flowing pretty good but not too dangerous. If the graph shows a sharp increase over the past week it may still be rising.',
 		flow5 : 'The flow is moving now! Unless this is a large volume river like the Colorado or Rio Grande you can expect some really fast moving water.',
 		flow6 : 'DANGER! Possible death awaits! Unless this is a large volume river like the Colorado you may drown. Check with a local outfitter for more details on conditions before heading out'
-	}, // END permanant config 
-	
+	}, // END permanant config
+
 	// get the json feed on form submit
 	init : function(config, configP) {
-	
+
 	$(flowApp.configP.form).bind('change', function(){
-													
+
 		// make sure the select option has a value
 		if(!$(flowApp.configP.selectRiver).val()){
 			return false;
-		} 
+		}
 
 		// remove all exiting data first
 		$(flowApp.configP.conditions).empty();
@@ -72,18 +72,18 @@ var flowApp = {
 		// $(flowApp.configP.loading).fadeIn(200);
 		//flowApp.config.siteId = $("#siteId").val();
 		flowApp.config.riverLocation = $(flowApp.configP.selectRiver).val();
-		flowApp.config.pipeURL = flowApp.configP.proxy + '?url=' + 
-			encodeURIComponent(flowApp.configP.baseURL) + 
-			encodeURIComponent(flowApp.config.riverLocation) + 
+		flowApp.config.pipeURL = flowApp.configP.proxy + '?url=' +
+			encodeURIComponent(flowApp.configP.baseURL) +
+			encodeURIComponent(flowApp.config.riverLocation) +
 			encodeURIComponent(flowApp.configP.params);
-		
+
 		// return the graph and photos before hitting yahoo pipes
 		// display the graph
-		flowApp.displayGraph();	
+		flowApp.displayGraph();
 		// build the flickr tags and return the images
 		flowApp.buildFlickrTags();
 		flowApp.getFlickrImages();
-		
+
 		$.getJSON(flowApp.config.pipeURL, function(data){
 
 			// check if any data is returned
@@ -91,59 +91,59 @@ var flowApp = {
 				// if no data is returned show a message instead of old data
 				flowApp.displayNoDataReturned();
 			} else {
-			
+
 			$.each(data.contents.value.timeSeries, function(i,item){
-			
+
 				// set the data variables for display
 				flowApp.config.siteName = item.sourceInfo.siteName;
-				flowApp.config.latitude = item.sourceInfo.geoLocation.geogLocation.latitude; 
+				flowApp.config.latitude = item.sourceInfo.geoLocation.geogLocation.latitude;
 				flowApp.config.longitude = item.sourceInfo.geoLocation.geogLocation.longitude;
-				flowApp.config.totalCount = item.values.count;	
+				flowApp.config.totalCount = item.values.count;
 				// set cfs value
 				flowApp.config.latestCfs = item.values[0].value[0].value;
 				// set date
 				flowApp.config.latestTime = item.values[0].value[0].dateTime;
 
 			}); // END $.each
-			
+
 			// get todays date and trim hours
 			var todaysDate = new Date();
 			todaysDate = todaysDate.toDateString();
-			
+
 			// create latest cfs date object
 			var d = new Date(flowApp.config.latestTime);
 			var timeDate = d.toDateString();
 			var timeHours = d.toLocaleTimeString();
-			
+
 			// compare todays date with the latest returned time
 			if (todaysDate === timeDate) {
 			  timeDate = 'Today';
 			}
 			flowApp.config.latestTime = timeDate + ' at ' + timeHours;
 
-			// save the name,cfs and display	
+			// save the name,cfs and display
 			var recentInfo = '<div class="recentValue"> ' + flowApp.config.latestCfs + '<span class="cfs">cfs</span> ' + flowApp.config.siteName + '<span class="latestTime"> ' + flowApp.config.latestTime + '</span>' + '</div>';
 			flowApp.saveLatestCfs(recentInfo);
-			
+
 			// create map link
-			flowApp.config.mapURL = flowApp.configP.baseMapURL + flowApp.config.latitude + ',+' + flowApp.config.longitude;	
+			flowApp.config.mapURL = flowApp.configP.baseMapURL + flowApp.config.latitude + ',+' + flowApp.config.longitude;
 			// round decimal and show the flow conditions message
 			flowApp.displayConditions(parseInt(flowApp.config.latestCfs,10));
 			// display the data
-			flowApp.displayData();			
-			
+			flowApp.displayData();
+
 			} // END check if any data is returned
-			
+
 			// debug - show all data
 			//console.log(data.value);
 
-		});	
+		});
 		return false; // prevent click
 		}); // END get json
-		
+
 	}, // END init
-	
-	displayData : function(){	
+
+	displayData : function(){
 		// display the results
 		flowApp.config.html = '<h1>' + flowApp.config.siteName + '</h1>';
 		flowApp.config.html += '<h2 id="flowRate">'+ flowApp.config.latestCfs + '<abbr id="flowCfs" title="cubic feet per second">CFS</abbr>'+ '</h2>';
@@ -151,7 +151,7 @@ var flowApp = {
 		flowApp.config.html += '<span id="latLong">Latitude: ' + flowApp.config.latitude + ' &nbsp; Longitude: ' + flowApp.config.longitude + '</span>';
 		$(flowApp.configP.flowInfo).append(flowApp.config.html);
 	},
-	
+
 	displayNoDataReturned : function(){
 		// remove loading
 		$(flowApp.configP.loading).fadeOut(200);
@@ -167,7 +167,7 @@ var flowApp = {
 		// display the graph
 		flowApp.displayGraph();
 	},
-	
+
 	buildFlickrTags : function(){
 		// get the tags from the select option text and trim everything after ':'
 		flowApp.config.flickrTags = $('#selectRiver option:selected').text().replace(/:.*/, '');
@@ -176,12 +176,12 @@ var flowApp = {
 		// combine the river name and keep 'kayak' as the other tag
 		flowApp.config.flickrTags = flowApp.config.flickrTags.replace(/\s+/g, '+');
 	},
-	
+
 	getFlickrImages : function(){
 		// empty first
 		$('#images').empty();
 		// get the new ones
-		$.getJSON('http://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=' + flowApp.configP.apiKey + '&tags=' + flowApp.config.flickrTags + '&per_page=10&tag_mode=all&sort=interestingness-asc&format=json&jsoncallback=?',
+		$.getJSON('https://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=' + flowApp.configP.apiKey + '&tags=' + flowApp.config.flickrTags + '&per_page=10&tag_mode=all&sort=interestingness-asc&format=json&jsoncallback=?',
 	          function(data){
 
 				//loop through the results with the following function
@@ -192,21 +192,21 @@ var flowApp = {
 				    // set the photo href
 					var photoHref = 'http://www.flickr.com/photos/' + item.owner + '/' + item.id;
 					var photo = '<img src="' + photoURL + '" />';
-					// add photo to the page 
+					// add photo to the page
 					$("<a/>").attr("href", photoHref).appendTo(flowApp.configP.images).append(photo);
-					
+
 				}); // END $.each
 
 		}); // END get json
 	},
-	
+
 	displayGraph : function(){
 		// display a graph of the flow
 		flowApp.config.graphURL = flowApp.configP.baseGraphURL + '&site_no=' + flowApp.config.riverLocation + '&period=' + flowApp.configP.graphPeriod;
 		flowApp.config.graphImage = '<img src="' + flowApp.config.graphURL + '"id="graph" width="576" height="400" alt="USGS Water-data graph">';
 		$('#graphWrapper').html(flowApp.config.graphImage);
 	},
-	
+
 	displayConditions : function(flowRate){
 		// check the range of the cfs and display the appropriate message
 		if (flowRate === 0) {
@@ -223,18 +223,18 @@ var flowApp = {
 			$(flowApp.configP.conditions).append(flowApp.configP.flow5);
 		} else if (flowRate > 2000) {
 			$(flowApp.configP.conditions).append(flowApp.configP.flow6);
-		} 
+		}
 	},
-	
+
 	saveLatestCfs : function(recentInfo){
 		// save the latest cfs value and display recentInfo
 		localStorage.recentInfo = recentInfo;
 		$(flowApp.configP.header).append(localStorage.recentInfo);
-		
+
 	}
-	
+
 };
-$(document).ready(function() { 
+$(document).ready(function() {
 	flowApp.init();
 	// check the window width and add appropriate stylesheet
 	// TODO: remove this code and replace with css media queries

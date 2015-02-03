@@ -1,13 +1,10 @@
 <!doctype html>
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Riverflow</title>
-  
+
   <!-- Mobile viewport optimized: h5bp.com/viewport -->
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" type="text/css" href="riverflow.css">
@@ -17,7 +14,7 @@
 <body>
     <div id="wrapper">
         <header id="header">
-        
+
             <div id="logo">River Flow</div>
             <span id="tagline">Texas Edition</span>
 
@@ -206,7 +203,7 @@
             <p>Texas River trip reports at <a href="http://www.mountaindrawn.com/">mountaindrawn.com</a></p>
         </footer>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <!-- <script src="underscore-min.js"></script> -->
     <script src="riverflow.js"></script>
 </body>
