@@ -1,1 +1,7 @@
-#images {display:block;width:263px;max-height:547px;overflow-x: hidden;overflow-y: auto;}
+#images {
+display:block;
+width:263px;
+max-height:547px;
+overflow-x:hidden;
+overflow-y:auto
+}

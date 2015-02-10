@@ -8,7 +8,6 @@
   <!-- Mobile viewport optimized: h5bp.com/viewport -->
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" type="text/css" href="riverflow.css">
-  <link rel="stylesheet" id="resizeStyle" type="text/css" href="wide.css">
 </head>
 
 <body>
