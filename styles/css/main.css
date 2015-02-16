@@ -360,6 +360,7 @@ th {
 html {
   box-sizing: border-box;
   background: #d3e2b6;
+  font-family: 'Lato', Helvetica, Arial;
 }
 *,
 *:before,
@@ -407,6 +408,9 @@ html {
   background: #68b3af;
   color: #d3e2b6;
 }
+.siteName h1 {
+  margin: 0;
+}
 .selectRiver {
   background: #87bdb1;
 }
@@ -419,7 +423,32 @@ html {
 .recentValueWrapper {
   background: #aaccb1;
   overflow-y: auto;
+  min-height: 125px;
   max-height: 250px;
+}
+.conditions {
+  text-align: left;
+}
+.recentValueWrapper {
+  text-align: left;
+}
+.flowRate {
+  position: relative;
+}
+.flowRate h2 {
+  font-size: 4em;
+  margin: 0;
+}
+.mapLinkLatLong {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: 75%;
+  padding: 7px 5px;
+}
+.mapLinkLatLong a {
+  display: inline-block;
+  margin: 0 5px 0 0;
 }
 .images {
   background: url('/images/riverflow-pattern.png');
@@ -447,6 +476,9 @@ html {
   /* image-rendering: pixelated; */
   max-width: 100%;
   padding: 0;
+}
+abbr {
+  font-size: 66%;
 }
 /* Medium screens */
 @media all and (max-width: 800px) {

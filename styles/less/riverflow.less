@@ -22,6 +22,7 @@
 html {
 	box-sizing: border-box;
 	background: @cream;
+	font-family: 'Lato', Helvetica, Arial;
 }
 *, *:before, *:after {
   box-sizing: inherit;
@@ -77,6 +78,10 @@ html {
 .siteName {
 	background: @darkBlue;
 	color: @cream;
+
+	h1 {
+		margin: 0;
+	}
 }
 
 .selectRiver {
@@ -94,20 +99,39 @@ html {
 	background: @grean;
 
 	overflow-y: auto;
+	min-height: 125px;
 	max-height: 250px;
 }
 
-#flowRate {}
+.conditions {
+	text-align: left;
+}
 
-#flowRate abbr {}
+.recentValueWrapper {
+	text-align: left;;
+}
 
-#wrapper {}
+.flowRate {
+	position: relative;
 
-#logo {}
+	h2 {
+		font-size: 4em;
+		margin: 0;
+	}
+}
 
-#tagline {}
+.mapLinkLatLong {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	font-size: 75%;
+	padding: 7px 5px;
 
-#conditions {}
+	a {
+		display: inline-block;
+		margin: 0 5px 0 0;
+	}
+}
 
 .images {
 	//background: @black;
@@ -158,7 +182,9 @@ html {
 
 #graph ul li {}
 
-#footer {}
+abbr {
+	font-size: 66%;
+}
 
 /* Medium screens */
 @media all and (max-width: 800px) {

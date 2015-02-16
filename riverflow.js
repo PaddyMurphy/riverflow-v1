@@ -119,7 +119,7 @@ var flowApp = {
             flowApp.config.latestTime = timeDate + ' at ' + timeHours;
 
             // save the name,cfs and display
-            var recentInfo = '<div class="recentValue"> ' + flowApp.config.latestCfs + '<span class="cfs">cfs</span> ' + flowApp.config.siteName + '<span class="latestTime"> ' + flowApp.config.latestTime + '</span>' + '</div>';
+            var recentInfo = '<div class="recentValue"> ' + flowApp.config.latestCfs + '<abbr class="cfs" title="cubic feet per second">cfs</abbr> ' + flowApp.config.siteName + '<span class="latestTime"> ' + flowApp.config.latestTime + '</span>' + '</div>';
             flowApp.saveLatestCfs(recentInfo);
 
             // create map link

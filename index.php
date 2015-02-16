@@ -6,6 +6,7 @@
   <title>Riverflow</title>
 
   <meta name="viewport" content="width=device-width">
+  <link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="styles/css/main.css">
 </head>
 
