@@ -359,7 +359,7 @@ th {
 /* apply a natural box layout model to all elements, but allowing components to change */
 html {
   box-sizing: border-box;
-  background: #d3e2b6;
+  background: #fff;
   font-family: 'Lato', Helvetica, Arial;
 }
 *,
@@ -367,16 +367,16 @@ html {
 *:after {
   box-sizing: inherit;
 }
-.hidden {
-  display: none!important;
-  visibility: hidden!important;
+abbr {
+  font-size: 66%;
 }
 .loading-message {
   position: absolute;
   top: 0;
   left: 0;
-  background: #9CF26D;
+  background: #fa6900;
   padding: 10px;
+  z-index: 99;
 }
 .tile-wrapper {
   text-align: center;
@@ -394,34 +394,42 @@ html {
 }
 .tile-group .tile {
   flex: 1 100%;
-  border: 1px solid #252029;
-  border-width: 0 0 0 1px;
 }
 .tile-group .tile:first-child {
   border-left: 0;
 }
 .nameHeadline {
   background: #252029;
-  color: #d3e2b6;
+  color: #fff;
+  overflow: hidden;
+}
+.nameHeadline > * {
+  opacity: 0.9;
+}
+.logo {
+  float: left;
+}
+.tagline {
+  float: right;
 }
 .siteName {
-  background: #68b3af;
-  color: #d3e2b6;
+  background: #69d2e7;
+  color: #252029;
 }
 .siteName h1 {
   margin: 0;
 }
-.selectRiver {
-  background: #87bdb1;
+#selectRiver {
+  font-size: 36px;
+  padding: 10px;
 }
-.selectRiver .strong {
+#selectRiver .strong {
   cursor: none;
   pointer-events: none;
 }
 .conditions,
 .flowRate,
 .recentValueWrapper {
-  background: #aaccb1;
   overflow-y: auto;
   min-height: 125px;
   max-height: 250px;
@@ -431,6 +439,20 @@ html {
 }
 .recentValueWrapper {
   text-align: left;
+}
+.recentValueWrapper > * {
+  padding: 0 0 5px;
+}
+.name {
+  display: inline-block;
+  padding: 0 3px 0 0;
+}
+.latestTime {
+  color: #999;
+  background: #eee;
+  display: inline-block;
+  font-size: 75%;
+  padding: 1px 3px;
 }
 .flowRate {
   position: relative;
@@ -449,9 +471,6 @@ html {
 .mapLinkLatLong a {
   display: inline-block;
   margin: 0 5px 0 0;
-}
-.images {
-  background: url('/images/riverflow-pattern.png');
 }
 .image-wrapper {
   display: -webkit-flex;
@@ -477,8 +496,9 @@ html {
   max-width: 100%;
   padding: 0;
 }
-abbr {
-  font-size: 66%;
+.hidden {
+  display: none!important;
+  visibility: hidden!important;
 }
 /* Medium screens */
 @media all and (max-width: 800px) {

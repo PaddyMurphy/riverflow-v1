@@ -17,8 +17,8 @@
         </div>
 
         <div class="tile nameHeadline">
-            <span id="logo">River Flow</span>
-            <span id="tagline">Texas Edition</span>
+            <span class="logo">River Flow</span>
+            <span class="tagline">Texas Edition</span>
         </div>
 
         <div class="tile siteName"></div>

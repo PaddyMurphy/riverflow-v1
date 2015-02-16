@@ -1,36 +1,26 @@
 @import 'normalize.less';
 
 // Pallete
-// http://www.colourlovers.com/palette/1942846/In_Riva_al_River
+// http://www.colourlovers.com/palette/92095/Giant_Goldfish
 @black: #252029;
-@darkBlue: #68B3AF;
-@lightBlue: #87BDB1;
-@grean: #AACCB1;
-@cream: #D3E2B6;
+@blue: #69D2E7;
+@lightBlue: #A7DBD8;
+@orange: #FA6900;
 
-// Flexbox display
-// flex or inline-flex
-.flex-display(@display: flex) {
-	display: ~"-webkit-@{display}";
-	display: ~"-moz-@{display}";
-	display: ~"-ms-@{display}box"; // IE10 uses -ms-flexbox
-	display: ~"-ms-@{display}"; // IE11
-	display: @display;
-}
 
 /* apply a natural box layout model to all elements, but allowing components to change */
 html {
 	box-sizing: border-box;
-	background: @cream;
+	background: #fff;
 	font-family: 'Lato', Helvetica, Arial;
 }
+
 *, *:before, *:after {
   box-sizing: inherit;
 }
 
-.hidden {
-	display: none!important;
-	visibility: hidden!important;
+abbr {
+	font-size: 66%;
 }
 
 .loading-message {
@@ -38,8 +28,9 @@ html {
 	top: 0;
 	left: 0;
 
-	background: #9CF26D;
+	background: @orange;
 	padding: 10px;
+	z-index: 99;
 }
 
 .tile-wrapper {
@@ -62,8 +53,8 @@ html {
 	.tile {
 		flex: 1 100%;
 
-		border: 1px solid @black;
-		border-width: 0 0 0 1px;
+		//border: 1px solid lighten(@black, 80%);
+		//border-width: 0 0 0 1px;
 		&:first-child {
 			border-left: 0;
 		}
@@ -72,20 +63,33 @@ html {
 
 .nameHeadline {
 	background: @black;
-	color: @cream;
+	color: #fff;
+	overflow: hidden;
+
+	> * {
+		opacity: 0.9;
+	}
+}
+
+.logo {
+	float: left;
+}
+.tagline {
+	float: right;
 }
 
 .siteName {
-	background: @darkBlue;
-	color: @cream;
+	background: @blue;
+	color: @black;
 
 	h1 {
 		margin: 0;
 	}
 }
 
-.selectRiver {
-	background: @lightBlue;
+#selectRiver {
+	font-size: 36px;
+	padding: 10px;
 
 	.strong {
 		cursor: none;
@@ -96,8 +100,6 @@ html {
 .conditions,
 .flowRate,
 .recentValueWrapper {
-	background: @grean;
-
 	overflow-y: auto;
 	min-height: 125px;
 	max-height: 250px;
@@ -108,7 +110,24 @@ html {
 }
 
 .recentValueWrapper {
-	text-align: left;;
+	text-align: left;
+
+	> * {
+		padding: 0 0 5px;
+	}
+}
+
+.name {
+	display: inline-block;
+	padding: 0 3px 0 0;
+}
+
+.latestTime {
+	color: #999;
+	background: #eee;
+	display: inline-block;
+	font-size: 75%;
+	padding: 1px 3px;
 }
 
 .flowRate {
@@ -135,7 +154,6 @@ html {
 
 .images {
 	//background: @black;
-	background: url('/images/riverflow-pattern.png');
 }
 
 .image-wrapper {
@@ -172,19 +190,25 @@ html {
 	padding: 0;
 }
 
-#graph h2 {}
+//------  Mixins ---------
 
-#graph h3 {}
-
-#graph p {}
-
-#graph ul {}
-
-#graph ul li {}
-
-abbr {
-	font-size: 66%;
+// flex or inline-flex
+.flex-display(@display: flex) {
+	display: ~"-webkit-@{display}";
+	display: ~"-moz-@{display}";
+	display: ~"-ms-@{display}box"; // IE10 uses -ms-flexbox
+	display: ~"-ms-@{display}"; // IE11
+	display: @display;
 }
+
+//------  Helpers ---------
+
+.hidden {
+	display: none!important;
+	visibility: hidden!important;
+}
+
+//------  Media Queries ------
 
 /* Medium screens */
 @media all and (max-width: 800px) {
