@@ -21,7 +21,7 @@
             <span class="tagline">Texas Edition</span>
         </div>
 
-        <div class="tile siteName"></div>
+        <!-- <div class="tile siteName"></div> -->
 
         <div class="tile selectRiver">
             <form action="#" method="get" id="formRiver">
@@ -186,8 +186,6 @@
             <div class="tile flowRate"></div>
             <div class="tile recentValueWrapper"></div>
         </div>
-
-        <!-- <div class="tile-group" id="flowInfo"></div> -->
 
         <div class="tile" id="graph">
             <span id="graphWrapper"></span>

@@ -6,7 +6,8 @@
 @blue: #69D2E7;
 @lightBlue: #A7DBD8;
 @orange: #FA6900;
-
+@lightOrange: #F38630;
+@cream: #E0E4CC;
 
 /* apply a natural box layout model to all elements, but allowing components to change */
 html {
@@ -17,10 +18,6 @@ html {
 
 *, *:before, *:after {
   box-sizing: inherit;
-}
-
-abbr {
-	font-size: 66%;
 }
 
 .loading-message {
@@ -34,10 +31,6 @@ abbr {
 }
 
 .tile-wrapper {
-	// .flex-display();
-	// -webkit-flex-flow: row wrap;
-	// flex-flow: row wrap;
-
 	text-align: center;
 }
 
@@ -52,7 +45,6 @@ abbr {
 
 	.tile {
 		flex: 1 100%;
-
 		//border: 1px solid lighten(@black, 80%);
 		//border-width: 0 0 0 1px;
 		&:first-child {
@@ -78,18 +70,24 @@ abbr {
 	float: right;
 }
 
-.siteName {
-	background: @blue;
-	color: @black;
+// .siteName {
+// 	background: @blue;
+// 	color: @black;
 
-	h1 {
-		margin: 0;
-	}
+// 	h1 {
+// 		margin: 0;
+// 	}
+// }
+
+.selectRiver {
+	background: @blue;
+	border-bottom: 1px solid @lightBlue;
+	overflow-x: auto;
 }
 
 #selectRiver {
-	font-size: 36px;
-	padding: 10px;
+	background: #fff; // required to change size in webkit
+	font-size: 28px;
 
 	.strong {
 		cursor: none;
@@ -102,14 +100,18 @@ abbr {
 .recentValueWrapper {
 	overflow-y: auto;
 	min-height: 125px;
-	max-height: 250px;
+	max-height: 200px;
 }
 
 .conditions {
+	.scroll-indicator();
+
 	text-align: left;
 }
 
 .recentValueWrapper {
+	.scroll-indicator();
+
 	text-align: left;
 
 	> * {
@@ -118,7 +120,6 @@ abbr {
 }
 
 .name {
-	display: inline-block;
 	padding: 0 3px 0 0;
 }
 
@@ -134,8 +135,15 @@ abbr {
 	position: relative;
 
 	h2 {
+		color: @orange;
+		display: inline-block;
 		font-size: 4em;
 		margin: 0;
+	}
+
+	abbr {
+		color: @lightOrange;
+		font-size: 50%;
 	}
 }
 
@@ -152,9 +160,16 @@ abbr {
 	}
 }
 
-.images {
-	//background: @black;
+#graph {
+	//background: @cream;
+	height: auto;
+	/* TODO: test on a phone first */
+	/* image-rendering: pixelated; */
+	max-width: 100%;
+	padding: 0;
 }
+
+.images {}
 
 .image-wrapper {
 	.flex-display();
@@ -180,17 +195,8 @@ abbr {
 
 }
 
-#graph {
-	//background: url('/images/riverflow-pattern.png');
 
-	height: auto;
-	/* TODO: test on a phone first */
-	/* image-rendering: pixelated; */
-	max-width: 100%;
-	padding: 0;
-}
-
-//------  Mixins ---------
+//------  MIXINS ---------
 
 // flex or inline-flex
 .flex-display(@display: flex) {
@@ -201,7 +207,39 @@ abbr {
 	display: @display;
 }
 
-//------  Helpers ---------
+// visual indication of scrollable content
+// http://lea.verou.me/2012/04/background-attachment-local/
+.scroll-indicator() {
+    background:
+        /* Shadow covers */
+        linear-gradient(white 30%, rgba(255,255,255,0)),
+        linear-gradient(rgba(255,255,255,0), white 70%) 0 100%,
+
+        /* Shadows */
+        radial-gradient(50% 0, farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)),
+        radial-gradient(50% 100%,farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+    background:
+        /* Shadow covers */
+        linear-gradient(white 30%, rgba(255,255,255,0)),
+        linear-gradient(rgba(255,255,255,0), white 70%) 0 100%,
+
+        /* Shadows */
+        radial-gradient(farthest-side at 50% 0, rgba(0,0,0,.2), rgba(0,0,0,0)),
+        radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+    background-repeat: no-repeat;
+    background-color: white;
+    background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+
+    /* Opera doesn't support this in the shorthand */
+    background-attachment: local, local, scroll, scroll;
+}
+
+//------  Helpers & defaults ---------
+
+
+abbr {
+	font-size: 66%;
+}
 
 .hidden {
 	display: none!important;
@@ -210,19 +248,26 @@ abbr {
 
 //------  Media Queries ------
 
-/* Medium screens */
-@media all and (max-width: 800px) {
-  .tile-group {
-    /* When on medium sized screens, we center it by evenly distributing empty space around items */
-    justify-content: space-around;
-  }
-}
-
-/* Small screens */
-@media all and (max-width: 500px) {
-  .tile-group {
-    /* On small screens, we are no longer using row direction but column */
-    //flex-direction: column;
-  }
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen
+and (max-width : 480px) {
+	// wrap recent values to next line
+	// show conditions and value beside each other
+	#selectRiver {
+		max-width: 360px;
+	}
+	.tile-group {
+		flex-wrap: wrap;
+	}
+	.conditions,
+	.flowRate {
+		//background: pink;
+		flex: 2 50% !important;
+	}
+	.recentValueWrapper {
+		min-height: 20px;
+		max-height: 160px;
+		text-align: center;
+	}
 }
 

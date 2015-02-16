@@ -367,9 +367,6 @@ html {
 *:after {
   box-sizing: inherit;
 }
-abbr {
-  font-size: 66%;
-}
 .loading-message {
   position: absolute;
   top: 0;
@@ -412,16 +409,14 @@ abbr {
 .tagline {
   float: right;
 }
-.siteName {
+.selectRiver {
   background: #69d2e7;
-  color: #252029;
-}
-.siteName h1 {
-  margin: 0;
+  border-bottom: 1px solid #a7dbd8;
+  overflow-x: auto;
 }
 #selectRiver {
-  font-size: 36px;
-  padding: 10px;
+  background: #fff;
+  font-size: 28px;
 }
 #selectRiver .strong {
   cursor: none;
@@ -432,19 +427,32 @@ abbr {
 .recentValueWrapper {
   overflow-y: auto;
   min-height: 125px;
-  max-height: 250px;
+  max-height: 200px;
 }
 .conditions {
+  background: /* Shadow covers */ linear-gradient(#ffffff 30%, rgba(255, 255, 255, 0)), linear-gradient(rgba(255, 255, 255, 0), #ffffff 70%) 0 100%, /* Shadows */ radial-gradient(50% 0, farthest-side, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)), radial-gradient(50% 100%, farthest-side, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) 0 100%;
+  background: /* Shadow covers */ linear-gradient(#ffffff 30%, rgba(255, 255, 255, 0)), linear-gradient(rgba(255, 255, 255, 0), #ffffff 70%) 0 100%, /* Shadows */ radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)), radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) 0 100%;
+  background-repeat: no-repeat;
+  background-color: white;
+  background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+  /* Opera doesn't support this in the shorthand */
+  background-attachment: local, local, scroll, scroll;
   text-align: left;
 }
 .recentValueWrapper {
+  background: /* Shadow covers */ linear-gradient(#ffffff 30%, rgba(255, 255, 255, 0)), linear-gradient(rgba(255, 255, 255, 0), #ffffff 70%) 0 100%, /* Shadows */ radial-gradient(50% 0, farthest-side, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)), radial-gradient(50% 100%, farthest-side, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) 0 100%;
+  background: /* Shadow covers */ linear-gradient(#ffffff 30%, rgba(255, 255, 255, 0)), linear-gradient(rgba(255, 255, 255, 0), #ffffff 70%) 0 100%, /* Shadows */ radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)), radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) 0 100%;
+  background-repeat: no-repeat;
+  background-color: white;
+  background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+  /* Opera doesn't support this in the shorthand */
+  background-attachment: local, local, scroll, scroll;
   text-align: left;
 }
 .recentValueWrapper > * {
   padding: 0 0 5px;
 }
 .name {
-  display: inline-block;
   padding: 0 3px 0 0;
 }
 .latestTime {
@@ -458,8 +466,14 @@ abbr {
   position: relative;
 }
 .flowRate h2 {
+  color: #fa6900;
+  display: inline-block;
   font-size: 4em;
   margin: 0;
+}
+.flowRate abbr {
+  color: #f38630;
+  font-size: 50%;
 }
 .mapLinkLatLong {
   position: absolute;
@@ -471,6 +485,13 @@ abbr {
 .mapLinkLatLong a {
   display: inline-block;
   margin: 0 5px 0 0;
+}
+#graph {
+  height: auto;
+  /* TODO: test on a phone first */
+  /* image-rendering: pixelated; */
+  max-width: 100%;
+  padding: 0;
 }
 .image-wrapper {
   display: -webkit-flex;
@@ -489,27 +510,28 @@ abbr {
   background-size: cover;
   width: 100%;
 }
-#graph {
-  height: auto;
-  /* TODO: test on a phone first */
-  /* image-rendering: pixelated; */
-  max-width: 100%;
-  padding: 0;
+abbr {
+  font-size: 66%;
 }
 .hidden {
   display: none!important;
   visibility: hidden!important;
 }
-/* Medium screens */
-@media all and (max-width: 800px) {
-  .tile-group {
-    /* When on medium sized screens, we center it by evenly distributing empty space around items */
-    justify-content: space-around;
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (max-width: 480px) {
+  #selectRiver {
+    max-width: 360px;
   }
-}
-/* Small screens */
-@media all and (max-width: 500px) {
   .tile-group {
-    /* On small screens, we are no longer using row direction but column */
+    flex-wrap: wrap;
+  }
+  .conditions,
+  .flowRate {
+    flex: 2 50% !important;
+  }
+  .recentValueWrapper {
+    min-height: 20px;
+    max-height: 160px;
+    text-align: center;
   }
 }
