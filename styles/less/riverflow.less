@@ -1,0 +1,178 @@
+@import 'normalize.less';
+
+// Pallete
+// http://www.colourlovers.com/palette/1942846/In_Riva_al_River
+@black: #252029;
+@darkBlue: #68B3AF;
+@lightBlue: #87BDB1;
+@grean: #AACCB1;
+@cream: #D3E2B6;
+
+// Flexbox display
+// flex or inline-flex
+.flex-display(@display: flex) {
+	display: ~"-webkit-@{display}";
+	display: ~"-moz-@{display}";
+	display: ~"-ms-@{display}box"; // IE10 uses -ms-flexbox
+	display: ~"-ms-@{display}"; // IE11
+	display: @display;
+}
+
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
+	box-sizing: border-box;
+	background: @cream;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.hidden {
+	display: none!important;
+	visibility: hidden!important;
+}
+
+.loading-message {
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	background: #9CF26D;
+	padding: 10px;
+}
+
+.tile-wrapper {
+	// .flex-display();
+	// -webkit-flex-flow: row wrap;
+	// flex-flow: row wrap;
+
+	text-align: center;
+}
+
+.tile {
+	padding: 10px;
+	//flex: 1 100%;
+}
+
+/* tile-group is for containers that have more tiles */
+.tile-group {
+	.flex-display();
+
+	.tile {
+		flex: 1 100%;
+
+		border: 1px solid @black;
+		border-width: 0 0 0 1px;
+		&:first-child {
+			border-left: 0;
+		}
+	}
+}
+
+.nameHeadline {
+	background: @black;
+	color: @cream;
+}
+
+.siteName {
+	background: @darkBlue;
+	color: @cream;
+}
+
+.selectRiver {
+	background: @lightBlue;
+
+	.strong {
+		cursor: none;
+		pointer-events: none;
+	}
+}
+
+.conditions,
+.flowRate,
+.recentValueWrapper {
+	background: @grean;
+
+	overflow-y: auto;
+	max-height: 250px;
+}
+
+#flowRate {}
+
+#flowRate abbr {}
+
+#wrapper {}
+
+#logo {}
+
+#tagline {}
+
+#conditions {}
+
+.images {
+	//background: @black;
+	background: url('/images/riverflow-pattern.png');
+}
+
+.image-wrapper {
+	.flex-display();
+
+	flex-flow: row wrap;
+	font-size: 0;
+
+	> * {
+		flex: auto;
+		height: 135px;
+	}
+
+	a {
+
+	}
+
+	// natural horizontal: 240 x 135
+	img {
+		background-size: cover;
+		width: 100%;
+		//height: auto;
+	}
+
+}
+
+#graph {
+	//background: url('/images/riverflow-pattern.png');
+
+	height: auto;
+	/* TODO: test on a phone first */
+	/* image-rendering: pixelated; */
+	max-width: 100%;
+	padding: 0;
+}
+
+#graph h2 {}
+
+#graph h3 {}
+
+#graph p {}
+
+#graph ul {}
+
+#graph ul li {}
+
+#footer {}
+
+/* Medium screens */
+@media all and (max-width: 800px) {
+  .tile-group {
+    /* When on medium sized screens, we center it by evenly distributing empty space around items */
+    justify-content: space-around;
+  }
+}
+
+/* Small screens */
+@media all and (max-width: 500px) {
+  .tile-group {
+    /* On small screens, we are no longer using row direction but column */
+    //flex-direction: column;
+  }
+}
+

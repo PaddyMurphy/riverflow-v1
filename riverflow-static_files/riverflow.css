@@ -1,0 +1,63 @@
+/* Pallete */
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+.hidden {
+  display: none!important;
+  visibility: hidden!important;
+}
+.loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #9CF26D;
+  padding: 10px;
+}
+.tile-wrapper {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  background: #fffea4;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  text-align: center;
+}
+.tile {
+  padding: 10px;
+  flex: 1 100%;
+}
+/* tile-group is for containers that have more tiles */
+.tile-group {
+  display: inherit;
+}
+#selectRiver .strong {
+  cursor: none;
+}
+#graph {
+  height: auto;
+  /* TODO: test on a phone first */
+  /* image-rendering: pixelated; */
+  max-width: 100%;
+}
+/* Medium screens */
+@media all and (max-width: 800px) {
+  .tile-group {
+    /* When on medium sized screens, we center it by evenly distributing empty space around items */
+    justify-content: space-around;
+  }
+}
+/* Small screens */
+@media all and (max-width: 500px) {
+  .tile-group {
+    /* On small screens, we are no longer using row direction but column */
+    flex-direction: column;
+  }
+}

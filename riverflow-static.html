@@ -1,31 +1,30 @@
-<!doctype html>
-<html class="no-js" lang="en">
-<head>
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://localhost:8888/ -->
+<html class="js" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Riverflow</title>
 
+  <!-- Mobile viewport optimized: h5bp.com/viewport -->
   <meta name="viewport" content="width=device-width">
-  <link rel="stylesheet" type="text/css" href="styles/css/main.css">
+  <link rel="stylesheet" type="text/css" href="styles/css/riverflow.css">
 </head>
 
 <body>
     <div class="tile-wrapper" id="wrapper">
-        <div class="loading-message hidden">
+        <div class="loading">
             loading USGS information...
         </div>
 
         <div class="tile nameHeadline">
-            <span id="logo">River Flow</span>
+            <div id="logo">River Flow</div>
             <span id="tagline">Texas Edition</span>
         </div>
 
-        <div class="tile siteName"></div>
-
         <div class="tile selectRiver">
-            <form action="#" method="get" id="formRiver">
+            <form action="http://localhost:8888/" method="get" id="formRiver">
                 <select id="selectRiver" name="selectRiver">
-                    <option class="strong" selected value="">
+                    <option class="strong" selected="" value="">
                         -- Texas Rivers and Streams --
                     </option>
 
@@ -180,25 +179,24 @@
             </form>
         </div>
 
-        <div class="tile-group">
-            <div class="tile conditions"></div>
-            <div class="tile flowRate"></div>
-            <div class="tile recentValueWrapper"></div>
-        </div>
+        <div class="tile conditions">It's barely moving but it should be floatable in kayaks or toobs. Be prepared to drag bottom in spots though.</div>
 
-        <!-- <div class="tile-group" id="flowInfo"></div> -->
+        <div class="tile-group" id="flowInfo"><div class="tile siteName"><h1>Barton Ck at Lost Ck Blvd nr Austin, TX</h1></div><div class="tile flowRate"><h2>69<abbr id="flowCfs" title="cubic feet per second">CFS</abbr></h2></div><div class="tile mapLinkLatLong"><a href="http://maps.google.com/?q=30.2740957,+-97.8447296">View a Map</a>Latitude: 30.2740957 &nbsp; Longitude: -97.8447296</div></div>
 
-        <div class="tile" id="graph">
-            <span id="graphWrapper"></span>
-        </div>
+        <section class="tile" id="graph">
+            <span id="graphWrapper"><img src="./riverflow-static_files/graph" id="graph" width="576" height="400" alt="USGS Water-data graph"></span>
+        </section>
 
         <div class="tile images">
-            <div class="tile-wrapper image-wrapper"></div>
+            <div class="tile-wrapper">
+            <a href="http://www.flickr.com/photos/24018748@N00/4127452329"><img src="./riverflow-static_files/4127452329_caa466082f_m.jpg"></a><a href="http://www.flickr.com/photos/24018748@N00/4127449261"><img src="./riverflow-static_files/4127449261_e41351252c_m.jpg"></a><a href="http://www.flickr.com/photos/24018748@N00/4127441915"><img src="./riverflow-static_files/4127441915_e70dd01b48_m.jpg"></a><a href="http://www.flickr.com/photos/24018748@N00/4127438695"><img src="./riverflow-static_files/4127438695_f1eee217e1_m.jpg"></a><a href="http://www.flickr.com/photos/24018748@N00/4127434205"><img src="./riverflow-static_files/4127434205_c375919ec3_m.jpg"></a><a href="http://www.flickr.com/photos/24018748@N00/4127431689"><img src="./riverflow-static_files/4127431689_48060315c4_m.jpg"></a><a href="http://www.flickr.com/photos/24018748@N00/4128202364"><img src="./riverflow-static_files/4128202364_7f9d82fb0a_m.jpg"></a><a href="http://www.flickr.com/photos/7496440@N06/2643915952"><img src="./riverflow-static_files/2643915952_e0b557b33f_m.jpg"></a><a href="http://www.flickr.com/photos/7496440@N06/2643915584"><img src="./riverflow-static_files/2643915584_cab3e6a688_m.jpg"></a><a href="http://www.flickr.com/photos/52474873@N00/155374761"><img src="./riverflow-static_files/155374761_2d198fa9fd_m.jpg"></a>
+            </div>
         </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <!-- <script src="underscore-min.js"></script> -->
     <script src="riverflow.js"></script>
-</body>
-</html>
+
+
+</body></html>
