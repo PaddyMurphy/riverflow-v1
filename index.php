@@ -23,7 +23,7 @@
 
         <!-- <div class="tile siteName"></div> -->
 
-        <div class="tile selectRiver">
+        <div class="tile select-river-wrapper">
             <form action="#" method="get" id="formRiver">
                 <select id="selectRiver" name="selectRiver">
                     <option class="strong" selected value="">
@@ -191,7 +191,7 @@
             <span id="graphWrapper"></span>
         </div>
 
-        <div class="tile images">
+        <div class="images">
             <div class="tile-wrapper image-wrapper"></div>
         </div>
     </div>

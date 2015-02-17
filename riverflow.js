@@ -54,7 +54,7 @@ var flowApp = {
     // get the json feed on form submit
     init : function(config, configP) {
 
-    $(flowApp.configP.form).bind('change', function(){
+    $(flowApp.configP.form).on('change', function(){
 
         // make sure the select option has a value
         if(!$(flowApp.configP.selectRiver).val()){
@@ -255,7 +255,7 @@ var flowApp = {
     saveLatestCfs : function(recentInfo){
         // save the latest cfs value and display recentInfo
         localStorage.recentInfo = recentInfo;
-        $('.recentValueWrapper').append(localStorage.recentInfo);
+        $('.recentValueWrapper').prepend(localStorage.recentInfo);
 
     }
 

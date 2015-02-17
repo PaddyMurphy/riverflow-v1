@@ -26,7 +26,7 @@ html {
 	left: 0;
 
 	background: @orange;
-	padding: 10px;
+	padding: 15px;
 	z-index: 99;
 }
 
@@ -35,8 +35,7 @@ html {
 }
 
 .tile {
-	padding: 10px;
-	//flex: 1 100%;
+	padding: 15px;
 }
 
 /* tile-group is for containers that have more tiles */
@@ -70,6 +69,7 @@ html {
 	float: right;
 }
 
+// NOTE: disabled site since the select provides the same title
 // .siteName {
 // 	background: @blue;
 // 	color: @black;
@@ -79,15 +79,16 @@ html {
 // 	}
 // }
 
-.selectRiver {
+.select-river-wrapper {
 	background: @blue;
-	border-bottom: 1px solid @lightBlue;
+	border-top: 1px solid @lightBlue;
 	overflow-x: auto;
 }
 
 #selectRiver {
 	background: #fff; // required to change size in webkit
 	font-size: 28px;
+	width: 100%;
 
 	.strong {
 		cursor: none;
@@ -112,10 +113,15 @@ html {
 .recentValueWrapper {
 	.scroll-indicator();
 
+	margin: 10px 0; // keep whitespace on top and bottom
+	max-height: 180px;  // minus whitespace
 	text-align: left;
+}
 
-	> * {
-		padding: 0 0 5px;
+.recentValue {
+	padding: 0 0 5px;
+	&:last-child {
+		padding-bottom: 0;
 	}
 }
 
@@ -161,15 +167,12 @@ html {
 }
 
 #graph {
-	//background: @cream;
+	// is pixelated better? at higher res it s
+	image-rendering: pixelated;
 	height: auto;
-	/* TODO: test on a phone first */
-	/* image-rendering: pixelated; */
-	max-width: 100%;
 	padding: 0;
+	width: 100%;
 }
-
-.images {}
 
 .image-wrapper {
 	.flex-display();
@@ -177,13 +180,9 @@ html {
 	flex-flow: row wrap;
 	font-size: 0;
 
-	> * {
-		flex: auto;
-		height: 135px;
-	}
-
 	a {
-
+		flex: auto;
+		max-height: 155px;
 	}
 
 	// natural horizontal: 240 x 135
@@ -253,21 +252,32 @@ abbr {
 and (max-width : 480px) {
 	// wrap recent values to next line
 	// show conditions and value beside each other
-	#selectRiver {
-		max-width: 360px;
-	}
 	.tile-group {
 		flex-wrap: wrap;
 	}
 	.conditions,
 	.flowRate {
 		//background: pink;
-		flex: 2 50% !important;
+		flex: 2 50% !important; // puts history under conditions & CFS
 	}
 	.recentValueWrapper {
 		min-height: 20px;
 		max-height: 160px;
 		text-align: center;
+	}
+
+	#graph {
+		image-rendering: auto; // pixelated graph is not very legible on mobile
+	}
+
+	// image gallery
+	.image-wrapper {
+		a {
+			flex: 0 1 50%; // keep 2 columns on mobile
+		}
+		img {
+			object-fit: cover;
+		}
 	}
 }
 
