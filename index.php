@@ -11,9 +11,9 @@
 </head>
 
 <body>
-    <div class="tile-wrapper" id="wrapper">
+    <div class="main">
         <div class="loading-message hidden">
-            loading USGS information...
+            hold on loading some stuff...
         </div>
 
         <div class="tile nameHeadline">
@@ -182,13 +182,13 @@
         </div>
 
         <div class="tile-group">
-            <div class="tile conditions"></div>
             <div class="tile flowRate"></div>
+            <div class="tile conditions"></div>
             <div class="tile recentValueWrapper"></div>
         </div>
 
         <div class="tile" id="graph">
-            <span id="graphWrapper"></span>
+            <div class="graph-wrapper"></div>
         </div>
 
         <div class="images">
@@ -197,7 +197,7 @@
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <!-- <script src="underscore-min.js"></script> -->
-    <script src="riverflow.js"></script>
+    <!-- TODO: use zepto instead <script src="javascript/zepto.min.js"></script> -->
+    <script src="javascript/riverflow.js"></script>
 </body>
 </html>

@@ -1,19 +1,13 @@
 @import 'normalize.less';
+@import 'variables-mixins.less';
 
-// Pallete
-// http://www.colourlovers.com/palette/92095/Giant_Goldfish
-@black: #252029;
-@blue: #69D2E7;
-@lightBlue: #A7DBD8;
-@orange: #FA6900;
-@lightOrange: #F38630;
-@cream: #E0E4CC;
 
 /* apply a natural box layout model to all elements, but allowing components to change */
 html {
 	box-sizing: border-box;
 	background: #fff;
 	font-family: 'Lato', Helvetica, Arial;
+	//font-size: 13px;
 }
 
 *, *:before, *:after {
@@ -21,12 +15,12 @@ html {
 }
 
 .loading-message {
-	position: absolute;
+	background: @orange;
+	position: fixed;
 	top: 0;
 	left: 0;
-
-	background: @orange;
 	padding: 15px;
+	width: 100%;
 	z-index: 99;
 }
 
@@ -35,6 +29,7 @@ html {
 }
 
 .tile {
+	.transition(all .3s linear);
 	padding: 15px;
 }
 
@@ -44,8 +39,7 @@ html {
 
 	.tile {
 		flex: 1 100%;
-		//border: 1px solid lighten(@black, 80%);
-		//border-width: 0 0 0 1px;
+
 		&:first-child {
 			border-left: 0;
 		}
@@ -53,8 +47,8 @@ html {
 }
 
 .nameHeadline {
-	background: @black;
-	color: #fff;
+	//background: @black;
+	//color: #fff;
 	overflow: hidden;
 
 	> * {
@@ -65,6 +59,7 @@ html {
 .logo {
 	float: left;
 }
+
 .tagline {
 	float: right;
 }
@@ -80,8 +75,8 @@ html {
 // }
 
 .select-river-wrapper {
-	background: @blue;
-	border-top: 1px solid @lightBlue;
+	//background: @blue;
+	//border-top: 1px solid @lightBlue;
 	overflow-x: auto;
 }
 
@@ -99,8 +94,7 @@ html {
 .conditions,
 .flowRate,
 .recentValueWrapper {
-	overflow-y: auto;
-	min-height: 125px;
+	//min-height: 25px;
 	max-height: 200px;
 }
 
@@ -110,16 +104,39 @@ html {
 	text-align: left;
 }
 
+.flowRate {
+	overflow-x: auto; // allow to scroll if text is long
+	position: relative;
+	text-align: center;
+
+	h2 {
+		color: @orange;
+		font-size: 4em;
+		margin: 0;
+	}
+
+	abbr {
+		color: @lightOrange;
+		font-size: 50%;
+	}
+}
+
 .recentValueWrapper {
 	.scroll-indicator();
 
-	margin: 10px 0; // keep whitespace on top and bottom
+	font-size: 85%;
 	max-height: 180px;  // minus whitespace
-	text-align: left;
+	overflow-y: auto; // scroll
+	text-align: center;
 }
 
 .recentValue {
-	padding: 0 0 5px;
+	opacity: 0.7;
+	padding: 5px 0;
+	&:first-child {
+		opacity: 1;
+		font-weight: bold;
+	}
 	&:last-child {
 		padding-bottom: 0;
 	}
@@ -137,26 +154,7 @@ html {
 	padding: 1px 3px;
 }
 
-.flowRate {
-	position: relative;
-
-	h2 {
-		color: @orange;
-		display: inline-block;
-		font-size: 4em;
-		margin: 0;
-	}
-
-	abbr {
-		color: @lightOrange;
-		font-size: 50%;
-	}
-}
-
 .mapLinkLatLong {
-	position: absolute;
-	bottom: 0;
-	left: 0;
 	font-size: 75%;
 	padding: 7px 5px;
 
@@ -167,11 +165,14 @@ html {
 }
 
 #graph {
-	// is pixelated better? at higher res it s
-	image-rendering: pixelated;
 	height: auto;
+	text-align: center;
 	padding: 0;
 	width: 100%;
+}
+
+.images {
+	background: @black;
 }
 
 .image-wrapper {
@@ -183,6 +184,7 @@ html {
 	a {
 		flex: auto;
 		max-height: 155px;
+		overflow: hidden;
 	}
 
 	// natural horizontal: 240 x 135
@@ -194,47 +196,11 @@ html {
 
 }
 
+//---  LOADING STATE  ----
 
-//------  MIXINS ---------
-
-// flex or inline-flex
-.flex-display(@display: flex) {
-	display: ~"-webkit-@{display}";
-	display: ~"-moz-@{display}";
-	display: ~"-ms-@{display}box"; // IE10 uses -ms-flexbox
-	display: ~"-ms-@{display}"; // IE11
-	display: @display;
-}
-
-// visual indication of scrollable content
-// http://lea.verou.me/2012/04/background-attachment-local/
-.scroll-indicator() {
-    background:
-        /* Shadow covers */
-        linear-gradient(white 30%, rgba(255,255,255,0)),
-        linear-gradient(rgba(255,255,255,0), white 70%) 0 100%,
-
-        /* Shadows */
-        radial-gradient(50% 0, farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)),
-        radial-gradient(50% 100%,farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
-    background:
-        /* Shadow covers */
-        linear-gradient(white 30%, rgba(255,255,255,0)),
-        linear-gradient(rgba(255,255,255,0), white 70%) 0 100%,
-
-        /* Shadows */
-        radial-gradient(farthest-side at 50% 0, rgba(0,0,0,.2), rgba(0,0,0,0)),
-        radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
-    background-repeat: no-repeat;
-    background-color: white;
-    background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
-
-    /* Opera doesn't support this in the shorthand */
-    background-attachment: local, local, scroll, scroll;
-}
+.loading {}
 
 //------  Helpers & defaults ---------
-
 
 abbr {
 	font-size: 66%;
@@ -243,6 +209,13 @@ abbr {
 .hidden {
 	display: none!important;
 	visibility: hidden!important;
+}
+
+// modern clearfix
+.group:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
 //------  Media Queries ------
@@ -258,7 +231,7 @@ and (max-width : 480px) {
 	.conditions,
 	.flowRate {
 		//background: pink;
-		flex: 2 50% !important; // puts history under conditions & CFS
+		//flex: 2 50% !important; // puts history under conditions & CFS
 	}
 	.recentValueWrapper {
 		min-height: 20px;
@@ -281,3 +254,26 @@ and (max-width : 480px) {
 	}
 }
 
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen
+and (min-width : 481px)
+and (max-width : 780px) {
+	// wrap recent values to next line
+	.tile-group {
+		flex-wrap: wrap;
+	}
+	.conditions,
+	.flowRate {
+		//background: pink;
+		flex: 2 50% !important; // puts history under conditions & CFS
+	}
+}
+
+// USGS graph is 576 x 400
+// set image-rendering to pixelated for legibility
+@media only screen
+and (min-width : 576px) {
+	#graph {
+		image-rendering: pixelated;
+	}
+}

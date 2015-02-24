@@ -1,0 +1,64 @@
+//----- Variables --------
+
+// Pallete
+// http://www.colourlovers.com/palette/92095/Giant_Goldfish
+@black: #000;
+@blue: #69D2E7;
+@lightBlue: #A7DBD8;
+@orange: #FA6900;
+@lightOrange: #F38630;
+@cream: #E0E4CC;
+
+//------  MIXINS ---------
+
+// flex or inline-flex
+.flex-display(@display: flex) {
+	display: ~"-webkit-@{display}";
+	display: ~"-moz-@{display}";
+	display: ~"-ms-@{display}box"; // IE10 uses -ms-flexbox
+	display: ~"-ms-@{display}"; // IE11
+	display: @display;
+}
+
+.transition (@transition) {
+    -webkit-transition: @transition;
+    -moz-transition:    @transition;
+    -ms-transition:     @transition;
+    -o-transition:      @transition;
+    transition:         @transition;
+}
+
+.transform(@string){
+    -webkit-transform: @string;
+    -moz-transform:      @string;
+    -ms-transform:       @string;
+    -o-transform:        @string;
+    transform:        @string;
+}
+
+// visual indication of scrollable content
+// http://lea.verou.me/2012/04/background-attachment-local/
+.scroll-indicator() {
+    background:
+        /* Shadow covers */
+        linear-gradient(white 30%, rgba(255,255,255,0)),
+        linear-gradient(rgba(255,255,255,0), white 70%) 0 100%,
+
+        /* Shadows */
+        radial-gradient(50% 0, farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)),
+        radial-gradient(50% 100%,farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+    background:
+        /* Shadow covers */
+        linear-gradient(white 30%, rgba(255,255,255,0)),
+        linear-gradient(rgba(255,255,255,0), white 70%) 0 100%,
+
+        /* Shadows */
+        radial-gradient(farthest-side at 50% 0, rgba(0,0,0,.2), rgba(0,0,0,0)),
+        radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+    background-repeat: no-repeat;
+    background-color: white;
+    background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+
+    /* Opera doesn't support this in the shorthand */
+    background-attachment: local, local, scroll, scroll;
+}

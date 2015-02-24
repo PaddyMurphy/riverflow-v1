@@ -368,17 +368,23 @@ html {
   box-sizing: inherit;
 }
 .loading-message {
-  position: absolute;
+  background: #fa6900;
+  position: fixed;
   top: 0;
   left: 0;
-  background: #fa6900;
   padding: 15px;
+  width: 100%;
   z-index: 99;
 }
 .tile-wrapper {
   text-align: center;
 }
 .tile {
+  -webkit-transition: all 0.3s linear;
+  -moz-transition: all 0.3s linear;
+  -ms-transition: all 0.3s linear;
+  -o-transition: all 0.3s linear;
+  transition: all 0.3s linear;
   padding: 15px;
 }
 /* tile-group is for containers that have more tiles */
@@ -396,8 +402,6 @@ html {
   border-left: 0;
 }
 .nameHeadline {
-  background: #252029;
-  color: #fff;
   overflow: hidden;
 }
 .nameHeadline > * {
@@ -410,8 +414,6 @@ html {
   float: right;
 }
 .select-river-wrapper {
-  background: #69d2e7;
-  border-top: 1px solid #a7dbd8;
   overflow-x: auto;
 }
 #selectRiver {
@@ -426,8 +428,6 @@ html {
 .conditions,
 .flowRate,
 .recentValueWrapper {
-  overflow-y: auto;
-  min-height: 125px;
   max-height: 200px;
 }
 .conditions {
@@ -440,6 +440,20 @@ html {
   background-attachment: local, local, scroll, scroll;
   text-align: left;
 }
+.flowRate {
+  overflow-x: auto;
+  position: relative;
+  text-align: center;
+}
+.flowRate h2 {
+  color: #fa6900;
+  font-size: 4em;
+  margin: 0;
+}
+.flowRate abbr {
+  color: #f38630;
+  font-size: 50%;
+}
 .recentValueWrapper {
   background: /* Shadow covers */ linear-gradient(#ffffff 30%, rgba(255, 255, 255, 0)), linear-gradient(rgba(255, 255, 255, 0), #ffffff 70%) 0 100%, /* Shadows */ radial-gradient(50% 0, farthest-side, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)), radial-gradient(50% 100%, farthest-side, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) 0 100%;
   background: /* Shadow covers */ linear-gradient(#ffffff 30%, rgba(255, 255, 255, 0)), linear-gradient(rgba(255, 255, 255, 0), #ffffff 70%) 0 100%, /* Shadows */ radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)), radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) 0 100%;
@@ -448,12 +462,18 @@ html {
   background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
   /* Opera doesn't support this in the shorthand */
   background-attachment: local, local, scroll, scroll;
-  margin: 10px 0;
+  font-size: 85%;
   max-height: 180px;
-  text-align: left;
+  overflow-y: auto;
+  text-align: center;
 }
 .recentValue {
-  padding: 0 0 5px;
+  opacity: 0.7;
+  padding: 5px 0;
+}
+.recentValue:first-child {
+  opacity: 1;
+  font-weight: bold;
 }
 .recentValue:last-child {
   padding-bottom: 0;
@@ -468,23 +488,7 @@ html {
   font-size: 75%;
   padding: 1px 3px;
 }
-.flowRate {
-  position: relative;
-}
-.flowRate h2 {
-  color: #fa6900;
-  display: inline-block;
-  font-size: 4em;
-  margin: 0;
-}
-.flowRate abbr {
-  color: #f38630;
-  font-size: 50%;
-}
 .mapLinkLatLong {
-  position: absolute;
-  bottom: 0;
-  left: 0;
   font-size: 75%;
   padding: 7px 5px;
 }
@@ -493,10 +497,13 @@ html {
   margin: 0 5px 0 0;
 }
 #graph {
-  image-rendering: pixelated;
   height: auto;
+  text-align: center;
   padding: 0;
   width: 100%;
+}
+.images {
+  background: #000000;
 }
 .image-wrapper {
   display: -webkit-flex;
@@ -510,6 +517,7 @@ html {
 .image-wrapper a {
   flex: auto;
   max-height: 155px;
+  overflow: hidden;
 }
 .image-wrapper img {
   background-size: cover;
@@ -522,14 +530,15 @@ abbr {
   display: none!important;
   visibility: hidden!important;
 }
+.group:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (max-width: 480px) {
   .tile-group {
     flex-wrap: wrap;
-  }
-  .conditions,
-  .flowRate {
-    flex: 2 50% !important;
   }
   .recentValueWrapper {
     min-height: 20px;
@@ -544,5 +553,20 @@ abbr {
   }
   .image-wrapper img {
     object-fit: cover;
+  }
+}
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-width: 481px) and (max-width: 780px) {
+  .tile-group {
+    flex-wrap: wrap;
+  }
+  .conditions,
+  .flowRate {
+    flex: 2 50% !important;
+  }
+}
+@media only screen and (min-width: 576px) {
+  #graph {
+    image-rendering: pixelated;
   }
 }
