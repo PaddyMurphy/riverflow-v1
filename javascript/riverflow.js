@@ -28,7 +28,6 @@ var flowApp = {
     }, // END config
 
     configP : {
-        proxy : 'ba-simple-proxy.php',
         baseURL : "http://waterservices.usgs.gov/nwis/iv/?format=json&sites=",
         params : "&parameterCd=00060",
         form : $('form#formRiver'),
@@ -62,6 +61,10 @@ var flowApp = {
         $(flowApp.configP.form).on('change', this.getUsgsData);
     },
 
+    getCompleteRiverData: function() {
+        // http://waterservices.usgs.gov/nwis/iv/?format=json&sites=08155200,08155240,08155300,08155400&parameterCd=00060,00065
+    },
+
     getUsgsData: function() {
         // fetches usgs instant data, usgs graph service, and flickr
         // make sure the select option has a value
@@ -77,10 +80,10 @@ var flowApp = {
 
         //flowApp.config.siteId = $("#siteId").val();
         flowApp.config.riverLocation = $(flowApp.configP.selectRiver).val();
-        flowApp.config.pipeURL = flowApp.configP.proxy + '?url=' +
-            encodeURIComponent(flowApp.configP.baseURL) +
-            encodeURIComponent(flowApp.config.riverLocation) +
-            encodeURIComponent(flowApp.configP.params);
+
+        flowApp.config.pipeURL =  flowApp.configP.baseURL +
+            flowApp.config.riverLocation +
+            flowApp.configP.params;
 
         // return the graph and photos before hitting yahoo pipes
         // display the graph
@@ -92,12 +95,12 @@ var flowApp = {
         $.getJSON(flowApp.config.pipeURL, function(data){
 
             // check if any data is returned
-            if(data.contents.value.timeSeries.length === 0) {
+            if(data.value.timeSeries.length === 0) {
                 // if no data is returned show a message instead of old data
                 flowApp.displayNoDataReturned();
             } else {
 
-            $.each(data.contents.value.timeSeries, function(i,item){
+            $.each(data.value.timeSeries, function(i,item){
 
                 // set the data variables for display
                 flowApp.config.siteName = item.sourceInfo.siteName;

@@ -22,7 +22,6 @@
         </div>
 
         <!-- <div class="tile siteName"></div> -->
-
         <div class="tile select-river-wrapper">
             <form action="#" method="get" id="formRiver">
                 <select id="selectRiver" name="selectRiver">
