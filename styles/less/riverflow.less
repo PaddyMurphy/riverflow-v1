@@ -1,7 +1,6 @@
 @import 'normalize.less';
 @import 'variables-mixins.less';
 
-
 /* apply a natural box layout model to all elements, but allowing components to change */
 html {
 	box-sizing: border-box;
@@ -181,15 +180,21 @@ html {
 
 	a {
 		flex: auto;
-		max-height: 155px;
+		//max-height: 155px;
 		overflow: hidden;
 	}
 
 	// natural horizontal: 240 x 135
 	img {
+		.transition(all .3s ease-out);
 		background-size: cover;
 		width: 100%;
 		//height: auto;
+
+		&:hover {
+			-webkit-filter: saturate(2);
+			filter: saturate(2);
+		}
 	}
 
 }

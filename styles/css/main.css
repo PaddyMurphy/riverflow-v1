@@ -516,12 +516,20 @@ html {
 }
 .image-wrapper a {
   flex: auto;
-  max-height: 155px;
   overflow: hidden;
 }
 .image-wrapper img {
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -ms-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
   background-size: cover;
   width: 100%;
+}
+.image-wrapper img:hover {
+  -webkit-filter: saturate(2);
+  filter: saturate(2);
 }
 abbr {
   font-size: 66%;

@@ -24,15 +24,12 @@ var flowApp = {
         html : "",
         flickrTags : "",
         flickrURL : "",
-        resizeStyle : ""
-    }, // END config
-
-    configP : {
+        resizeStyle : "",
         baseURL : "http://waterservices.usgs.gov/nwis/iv/?format=json&sites=",
         params : "&parameterCd=00060",
         form : $('form#formRiver'),
         selectRiver : $('#selectRiver'),
-        submitButton : $('form#formRiver #submit'),
+        submitButton : $('#submit'),
         bodyTag : document.getElementsByTagName('body')[0],
         graph : $('#graph'),
         images : $('.image-wrapper'),
@@ -58,32 +55,36 @@ var flowApp = {
     }, // END init
 
     events: function() {
-        $(flowApp.configP.form).on('change', this.getUsgsData);
+        // select is changed
+        $(flowApp.config.form).on('change', this.getUsgsData);
+
+        // view larger image
+        $(flowApp.config.images).on('click', 'a', this.getFlickrImage);
     },
 
     getCompleteRiverData: function() {
-        // http://waterservices.usgs.gov/nwis/iv/?format=json&sites=08155200,08155240,08155300,08155400&parameterCd=00060,00065
+        // http://waterservices.usgs.gov/nwis/iv/?format=json&sites=08155200,08155240,08155300,08155400&parameterCd=00060
     },
 
     getUsgsData: function() {
         // fetches usgs instant data, usgs graph service, and flickr
         // make sure the select option has a value
-        if(!$(flowApp.configP.selectRiver).val()){
+        if(!$(flowApp.config.selectRiver).val()){
             return false;
         }
 
-        // remove all exiting data first
-        $(flowApp.configP.conditions).empty();
+        // remove all existing data first
+        $(flowApp.config.conditions).empty();
         // display loading until the data is ready
-        flowApp.configP.loading.removeClass('hidden');
-        flowApp.configP.bodyTag.className = 'loading';
+        flowApp.config.loading.removeClass('hidden');
+        flowApp.config.bodyTag.className = 'loading';
 
         //flowApp.config.siteId = $("#siteId").val();
-        flowApp.config.riverLocation = $(flowApp.configP.selectRiver).val();
+        flowApp.config.riverLocation = $(flowApp.config.selectRiver).val();
 
-        flowApp.config.pipeURL =  flowApp.configP.baseURL +
+        flowApp.config.pipeURL =  flowApp.config.baseURL +
             flowApp.config.riverLocation +
-            flowApp.configP.params;
+            flowApp.config.params;
 
         // return the graph and photos before hitting yahoo pipes
         // display the graph
@@ -92,8 +93,8 @@ var flowApp = {
         flowApp.buildFlickrTags();
         flowApp.getFlickrImages();
 
-        $.getJSON(flowApp.config.pipeURL, function(data){
-
+        $.getJSON(flowApp.config.pipeURL, function(data){})
+        .success(function(data) {
             // check if any data is returned
             if(data.value.timeSeries.length === 0) {
                 // if no data is returned show a message instead of old data
@@ -125,7 +126,7 @@ var flowApp = {
 
             // compare todays date with the latest returned time
             if (todaysDate === timeDate) {
-              timeDate = 'Today';
+                timeDate = 'Today';
             }
             flowApp.config.latestTime = timeDate + ' at ' + timeHours;
 
@@ -138,21 +139,26 @@ var flowApp = {
             flowApp.saveLatestCfs(recentInfo);
 
             // create map link
-            flowApp.config.mapURL = flowApp.configP.baseMapURL + flowApp.config.latitude + ',+' + flowApp.config.longitude;
+            flowApp.config.mapURL = flowApp.config.baseMapURL + flowApp.config.latitude + ',+' + flowApp.config.longitude;
             // round decimal and show the flow conditions message
             flowApp.displayConditions(parseInt(flowApp.config.latestCfs,10));
             // display the data
             flowApp.displayData();
 
-            flowApp.configP.loading.addClass('hidden');
-
             } // END check if any data is returned
 
             // debug - show all data
             //console.log(data.value);
-            flowApp.configP.bodyTag.className = '';
+            flowApp.config.bodyTag.className = '';
 
-        });
+            flowApp.config.loading.addClass('hidden');
+
+        })
+        .error(function(msg) {
+            var statusText = msg.statusText;
+            console.warn(statusText);
+        }); // END get json
+
         return false; // prevent click
 
     },
@@ -182,20 +188,20 @@ var flowApp = {
     displayNoDataReturned : function(){
         console.error('No data returned from the endpoint');
         // remove loading
-        flowApp.configP.loading.removeClass('hidden');
-        flowApp.configP.images.empty();
+        flowApp.config.loading.removeClass('hidden');
+        flowApp.config.images.empty();
         flowApp.config.resultsMessage = "No flow information was returned from the  USGS.<br/>Try again soon to get the most recent cfs and map link.";
         // display the results
         flowApp.buildFlickrTags();
         flowApp.getFlickrImages();
         // display message
         flowApp.config.html = '<h2>' + flowApp.config.resultsMessage + '</h2>';
-        $(flowApp.configP.flowInfo).append(flowApp.config.html);
+        $(flowApp.config.flowInfo).append(flowApp.config.html);
         // display the graph
         flowApp.displayGraph();
     },
 
-    buildFlickrTags : function(){
+    buildFlickrTags: function(){
         // get the tags from the select option text and trim everything after ':'
         flowApp.config.flickrTags = $('#selectRiver option:selected').text().replace(/:.*/, '');
         flowApp.config.flickrTags = 'kayak%2C' + flowApp.config.flickrTags;
@@ -204,35 +210,64 @@ var flowApp = {
         flowApp.config.flickrTags = flowApp.config.flickrTags.replace(/\s+/g, '+');
     },
 
-    getFlickrImages : function(){
+    getFlickrImages: function(){
         // create document fragment to add all at once
+        var baseURL = 'https://api.flickr.com/services/rest/?&method=flickr.photos.search';
         var docFrag = document.createDocumentFragment();
         // get the new ones
-        $.getJSON('https://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=' + flowApp.configP.apiKey + '&tags=' + flowApp.config.flickrTags + '&per_page=10&tag_mode=all&sort=interestingness-asc&format=json&jsoncallback=?',
-              function(data){
+        $.getJSON(baseURL +
+            '&api_key=' + flowApp.config.apiKey +
+            '&tags=' + flowApp.config.flickrTags +
+            '&per_page=' + 10 +
+            '&tag_mode=' + 'all' +
+            '&sort=' + 'interestingness-asc' +
+            '&format=' + 'json' +
+            '&jsoncallback=' + '?',
+            function(data){})
+            .success(function(data) {
 
                 //loop through the results with the following function
                 $.each(data.photos.photo, function(i,item){
 
-                    //build the url of the photo in order to link to it
-                    var photoURL = 'http://farm' + item.farm + '.static.flickr.com/' + item.server + '/' + item.id + '_' + item.secret + '_m.jpg';
-                    // set the photo href
+                    var photoURL = 'http://farm' + item.farm + '.static.flickr.com/' + item.server + '/' + item.id + '_' + item.secret;
+                    var square = photoURL  + '_q.jpg'; // q = 150sq
+                    var photoMedium = photoURL  + '_m.jpg'; // m = 240long
+                    var photoLarge = photoURL  + '_b.jpg'; // b = 1024 on longest side,
+                    // set the photo href for larger views
                     var photoHref = '//www.flickr.com/photos/' + item.owner + '/' + item.id;
-                    var photo = '<img src="' + photoURL + '" />';
-                    // add photo to the page
-                    $("<a/>").attr("href", photoHref).appendTo(docFrag).append(photo);
+                    var photo = '<img src="' + square + '" />';
+                    // add photo to the docFrag
+                    $("<a/>").attr("href", photoLarge)
+                        .attr('data-photohref', photoHref)
+                        .attr('data-largeurl', photoLarge)
+                        .attr('data-lightbox','kayaking')
+                        .appendTo(docFrag).append(photo);
 
                 }); // END $.each
 
                 // append once
-                flowApp.configP.images.html(docFrag);
+                flowApp.config.images.html(docFrag);
+            })
+            .error(function(msg) {
+                console.log(msg);
+            })
+            .done(function(data) {
+            }); // END get json
 
-        }); // END get json
     },
 
-    displayGraph : function(){
+    getFlickrImage: function(e) {
+        // NOTE: using lightbox to handle the large images
+        // build url: https://www.flickr.com/services/api/misc.urls.html
+        // or make request with getInfo: https://www.flickr.com/services/api/flickr.photos.getInfo.html
+        e.preventDefault();
+        // var photo = e.currentTarget;
+        // var largeurl = photo.dataset['largeurl'];
+    },
+
+    displayGraph: function(){
         // display a graph of the flow
-        flowApp.config.graphURL = flowApp.configP.baseGraphURL + '&site_no=' + flowApp.config.riverLocation + '&period=' + flowApp.configP.graphPeriod;
+        flowApp.config.graphURL = flowApp.config.baseGraphURL + '&site_no=' + flowApp.config.riverLocation + '&period=' + flowApp.config.graphPeriod;
         flowApp.config.graphImage = '<img src="' + flowApp.config.graphURL + '"id="graph" alt="USGS Water-data graph">';
         $('.graph-wrapper').html(flowApp.config.graphImage);
     },
@@ -243,19 +278,19 @@ var flowApp = {
 
         // check the range of the cfs and display the appropriate message
         if (flowRate === 0) {
-            conditionText = flowApp.configP.flow0;
+            conditionText = flowApp.config.flow0;
         } else if ((flowRate > 0) && (flowRate < 50)) {
-            conditionText = flowApp.configP.flow1;
+            conditionText = flowApp.config.flow1;
         } else if ((flowRate > 50) && (flowRate < 100)) {
-            conditionText = flowApp.configP.flow2;
+            conditionText = flowApp.config.flow2;
         } else if ((flowRate > 100) && (flowRate < 300)) {
-            conditionText = flowApp.configP.flow3;
+            conditionText = flowApp.config.flow3;
         } else if ((flowRate > 300) && (flowRate < 600)) {
-            conditionText = flowApp.configP.flow4;
+            conditionText = flowApp.config.flow4;
         } else if ((flowRate > 600) && (flowRate < 2000)) {
-            conditionText = flowApp.configP.flow5;
+            conditionText = flowApp.config.flow5;
         } else if (flowRate > 2000) {
-            conditionText = flowApp.configP.flow6;
+            conditionText = flowApp.config.flow6;
         } else {
             console.error('no flow rate conditions met. flowRate = ' + flowRate);
         }
@@ -271,8 +306,37 @@ var flowApp = {
     }
 
 };
+//----- helpers ------
+
+// serializeObject:
+// convert form fields & values to json for model.save()
+// return all by default
+// @accepts true : return only non-empty values
+$.fn.serializeObject = function() {
+    var nonempty = (arguments[0]) ? true : false,
+        o = {},
+        a = this.serializeArray();
+
+    $.each(a, function() {
+        if(nonempty && this.value === '') {
+            return;
+        }
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+
+//------ initilize ----------
 $(document).ready(function() {
     flowApp.init();
     $('html').removeClass('no-js').addClass('js');
 });
+
 }());
