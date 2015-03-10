@@ -4,6 +4,7 @@
  *  @requires jQuery 1.4+
  */
 ;(function() {
+
 var flowApp = {
 
     config : {
@@ -52,6 +53,8 @@ var flowApp = {
 
         this.events();
 
+        this.router();
+
     }, // END init
 
     events: function() {
@@ -62,12 +65,59 @@ var flowApp = {
         $(flowApp.config.images).on('click', 'a', this.getFlickrImage);
     },
 
+    router: function() {
+
+        var that = this;
+
+        app_router.on('route:selectRiver', function(actions) {
+
+            that.getUsgsData(actions);
+
+        });
+
+        // Start Backbone history a necessary step for bookmarkable URL's
+        Backbone.history.start();
+
+    },
+
     getCompleteRiverData: function() {
         // http://waterservices.usgs.gov/nwis/iv/?format=json&sites=08155200,08155240,08155300,08155400&parameterCd=00060
     },
 
-    getUsgsData: function() {
+    formatRiverName: function(name) {
+        // parse the value (San Marcos River : Luling)
+        // to this (sanmarcos:luling)
+        var formatted = name;
+        formatted = formatted.toLowerCase();
+        formatted = formatted.replace(/ /g,''); // replace spaces
+        formatted = formatted.replace(/(\r\n|\n|\r)/gm,''); // remove line breaks
+        formatted = formatted.replace(/\-(\S*)\-/g,''); // exclude titles (i.e. --brazosriverbasin--)
+
+        return formatted;
+    },
+
+    getUsgsData: function(river) {
         // fetches usgs instant data, usgs graph service, and flickr
+        // check if routed here
+        if(typeof(river) === 'string') {
+            var options = document.querySelectorAll('#selectRiver option');
+            // set the selected option
+            _.each(options, function(option, i) {
+                if(flowApp.formatRiverName(option.innerText) === river) {
+                    option.selected = 'selected';
+                }
+            });
+
+        } else {
+            // selected so update url
+            var selected = document.querySelector('#selectRiver option:checked').innerText;
+
+            selected = flowApp.formatRiverName(selected);
+            // update the url
+            app_router.navigate('#/' + selected, {trigger: true});
+
+        }
+
         // make sure the select option has a value
         if(!$(flowApp.config.selectRiver).val()){
             return false;
@@ -306,6 +356,17 @@ var flowApp = {
     }
 
 };
+
+//----- router -------
+var AppRouter = Backbone.Router.extend({
+    routes: {
+        ":id": "selectRiver"
+    }
+});
+
+// Initiate the router
+var app_router = new AppRouter();
+
 //----- helpers ------
 
 // serializeObject:
