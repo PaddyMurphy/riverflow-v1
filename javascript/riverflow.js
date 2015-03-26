@@ -28,13 +28,12 @@ var flowApp = {
         resizeStyle : "",
         baseURL : "http://waterservices.usgs.gov/nwis/iv/?format=json&sites=",
         params : "&parameterCd=00060",
-        form : $('form#formRiver'),
-        selectRiver : $('#selectRiver'),
-        submitButton : $('#submit'),
+        form : document.querySelector('#formRiver'),
+        selectRiver : document.querySelector('#selectRiver'),
         bodyTag : document.getElementsByTagName('body')[0],
-        graph : $('#graph'),
-        images : $('.image-wrapper'),
-        loading : $('.loading-message'),
+        graph : document.querySelector('#graph'),
+        images : document.querySelector('.image-wrapper'),
+        loading : document.querySelector('.loading-message'),
         graphPeriod : 7,
         baseGraphURL : "http://waterdata.usgs.gov/nwisweb/graph?agency_cd=USGS&parm_cd=00060",
         baseMapURL : "http://maps.google.com/?q=",
@@ -58,15 +57,14 @@ var flowApp = {
     }, // END init
 
     events: function() {
-        // select is changed
+        // river selector
         $(flowApp.config.form).on('change', this.getUsgsData);
 
         // view larger image
         $(flowApp.config.images).on('click', 'a', this.getFlickrImage);
     },
 
-    router: function() {
-
+    router: function(data) {
         var that = this;
 
         app_router.on('route:selectRiver', function(actions) {
@@ -76,7 +74,10 @@ var flowApp = {
         });
 
         // Start Backbone history a necessary step for bookmarkable URL's
-        Backbone.history.start();
+        Backbone.history.start({
+            //root: "/",
+            pushState: false
+        });
 
     },
 
@@ -85,6 +86,7 @@ var flowApp = {
     },
 
     formatRiverName: function(name) {
+        //console.log(name);
         // parse the value (San Marcos River : Luling)
         // to this (sanmarcos:luling)
         var formatted = name;
@@ -103,18 +105,18 @@ var flowApp = {
             var options = document.querySelectorAll('#selectRiver option');
             // set the selected option
             _.each(options, function(option, i) {
-                if(flowApp.formatRiverName(option.innerText) === river) {
+                if(flowApp.formatRiverName(option.textContent) === river) {
                     option.selected = 'selected';
                 }
             });
 
         } else {
             // selected so update url
-            var selected = document.querySelector('#selectRiver option:checked').innerText;
+            var selected = document.querySelector('#selectRiver option:checked').textContent;
 
             selected = flowApp.formatRiverName(selected);
-            // update the url
-            app_router.navigate('#/' + selected, {trigger: true});
+            // update the url but do not trigger route
+            app_router.navigate(selected, {trigger: false, replace: true});
 
         }
 
@@ -126,8 +128,8 @@ var flowApp = {
         // remove all existing data first
         $(flowApp.config.conditions).empty();
         // display loading until the data is ready
-        flowApp.config.loading.removeClass('hidden');
-        flowApp.config.bodyTag.className = 'loading';
+        flowApp.config.loading.classList.remove('hidden');
+        flowApp.config.bodyTag.classList.add('loading');
 
         //flowApp.config.siteId = $("#siteId").val();
         flowApp.config.riverLocation = $(flowApp.config.selectRiver).val();
@@ -201,7 +203,7 @@ var flowApp = {
             //console.log(data.value);
             flowApp.config.bodyTag.className = '';
 
-            flowApp.config.loading.addClass('hidden');
+            flowApp.config.loading.classList.add('hidden');
 
         })
         .error(function(msg) {
@@ -215,10 +217,14 @@ var flowApp = {
 
     displayData: function() {
         // display tiles: siteName, flowRate, mapLinkLatLong
-
+        var siteName = document.querySelector('.siteName');
+        var flowRate = document.querySelector('.flowRate');
         // site name
-        flowApp.config.siteName = '<h1>' + flowApp.config.siteName + '</h1>';
-        $('.siteName').html(flowApp.config.siteName);
+        // NOTE: not displayed at this time
+        if(siteName) {
+            flowApp.config.siteName = '<h1>' + flowApp.config.siteName + '</h1>';
+            siteName.innerHTML = flowApp.config.siteName;
+        }
 
         // mapLinkLatLong
         var mapLinkLatLong = '<a href="' + flowApp.config.mapURL + '">' + 'View a Map' + '</a>';
@@ -228,18 +234,16 @@ var flowApp = {
         var flowRateText = '<h2>'+ flowApp.config.latestCfs + '<abbr id="flowCfs" title="cubic feet per second">CFS</abbr>'+ '</h2>';
         flowRateText += '<div class="mapLinkLatLong">' + mapLinkLatLong + '</div>';
 
-        $('.flowRate').html(flowRateText);
-
-
+        flowRate.innerHTML = flowRateText;
 
         //$('.mapLinkLatLong').html(mapLinkContainer);
     },
 
-    displayNoDataReturned : function(){
+    displayNoDataReturned : function() {
         console.error('No data returned from the endpoint');
         // remove loading
-        flowApp.config.loading.removeClass('hidden');
-        flowApp.config.images.empty();
+        $(flowApp.config.loading).removeClass('hidden');
+        $(flowApp.config.images).empty();
         flowApp.config.resultsMessage = "No flow information was returned from the  USGS.<br/>Try again soon to get the most recent cfs and map link.";
         // display the results
         flowApp.buildFlickrTags();
@@ -251,7 +255,7 @@ var flowApp = {
         flowApp.displayGraph();
     },
 
-    buildFlickrTags: function(){
+    buildFlickrTags: function() {
         // get the tags from the select option text and trim everything after ':'
         flowApp.config.flickrTags = $('#selectRiver option:selected').text().replace(/:.*/, '');
         flowApp.config.flickrTags = 'kayak%2C' + flowApp.config.flickrTags;
@@ -260,7 +264,7 @@ var flowApp = {
         flowApp.config.flickrTags = flowApp.config.flickrTags.replace(/\s+/g, '+');
     },
 
-    getFlickrImages: function(){
+    getFlickrImages: function() {
         // create document fragment to add all at once
         var baseURL = 'https://api.flickr.com/services/rest/?&method=flickr.photos.search';
         var docFrag = document.createDocumentFragment();
@@ -296,7 +300,10 @@ var flowApp = {
                 }); // END $.each
 
                 // append once
-                flowApp.config.images.html(docFrag);
+                // TODO: why does this insert [object DocumentFragment]
+                //flowApp.config.images.innerHTML = docFrag;
+                $(flowApp.config.images).html(docFrag);
+
             })
             .error(function(msg) {
                 console.log(msg);
@@ -311,47 +318,56 @@ var flowApp = {
         // build url: https://www.flickr.com/services/api/misc.urls.html
         // or make request with getInfo: https://www.flickr.com/services/api/flickr.photos.getInfo.html
         e.preventDefault();
-        // var photo = e.currentTarget;
-        // var largeurl = photo.dataset['largeurl'];
     },
 
     displayGraph: function(){
         // display a graph of the flow
         flowApp.config.graphURL = flowApp.config.baseGraphURL + '&site_no=' + flowApp.config.riverLocation + '&period=' + flowApp.config.graphPeriod;
         flowApp.config.graphImage = '<img src="' + flowApp.config.graphURL + '"id="graph" alt="USGS Water-data graph">';
-        $('.graph-wrapper').html(flowApp.config.graphImage);
+
+        document.querySelector('.graph-wrapper').innerHTML = flowApp.config.graphImage;
     },
 
     displayConditions : function(flowRate) {
-        var conditions = $('.conditions'),
-            conditionText = '';
+        var conditionText = '';
 
         // check the range of the cfs and display the appropriate message
         if (flowRate === 0) {
             conditionText = flowApp.config.flow0;
         } else if ((flowRate > 0) && (flowRate < 50)) {
             conditionText = flowApp.config.flow1;
-        } else if ((flowRate > 50) && (flowRate < 100)) {
+        } else if ((flowRate >= 50) && (flowRate < 100)) {
             conditionText = flowApp.config.flow2;
-        } else if ((flowRate > 100) && (flowRate < 300)) {
+        } else if ((flowRate >= 100) && (flowRate < 300)) {
             conditionText = flowApp.config.flow3;
-        } else if ((flowRate > 300) && (flowRate < 600)) {
+        } else if ((flowRate >= 300) && (flowRate < 600)) {
             conditionText = flowApp.config.flow4;
-        } else if ((flowRate > 600) && (flowRate < 2000)) {
+        } else if ((flowRate >= 600) && (flowRate < 2000)) {
             conditionText = flowApp.config.flow5;
-        } else if (flowRate > 2000) {
+        } else if (flowRate >= 2000) {
             conditionText = flowApp.config.flow6;
         } else {
             console.error('no flow rate conditions met. flowRate = ' + flowRate);
         }
 
-        conditions.html(conditionText);
+        document.querySelector('.conditions').innerHTML = conditionText;
     },
 
     saveLatestCfs : function(recentInfo){
+        // saves the lastest river data to localstorage
+        // and displays the list of cfs, river name and time
+        // TODO: set a max entry size?
+        var recent = recentInfo;
+
         // save the latest cfs value and display recentInfo
-        localStorage.recentInfo = recentInfo;
-        $('.recentValueWrapper').prepend(localStorage.recentInfo);
+        if(localStorage.recentInfo) {
+            localStorage.recentInfo = recent + localStorage.recentInfo;
+        } else {
+            localStorage.recentInfo = recent;
+        }
+
+        // show the latests value first
+        document.querySelector('.recentValueWrapper').innerHTML = localStorage.recentInfo;
 
     }
 
@@ -368,31 +384,6 @@ var AppRouter = Backbone.Router.extend({
 var app_router = new AppRouter();
 
 //----- helpers ------
-
-// serializeObject:
-// convert form fields & values to json for model.save()
-// return all by default
-// @accepts true : return only non-empty values
-$.fn.serializeObject = function() {
-    var nonempty = (arguments[0]) ? true : false,
-        o = {},
-        a = this.serializeArray();
-
-    $.each(a, function() {
-        if(nonempty && this.value === '') {
-            return;
-        }
-        if (o[this.name] !== undefined) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
-        }
-    });
-    return o;
-};
 
 //------ initilize ----------
 $(document).ready(function() {
