@@ -28,10 +28,10 @@ var flowApp = {
         resizeStyle : "",
         baseURL : "http://waterservices.usgs.gov/nwis/iv/?format=json&sites=",
         params : "&parameterCd=00060",
-        form : document.querySelector('#formRiver'),
-        selectRiver : document.querySelector('#selectRiver'),
+        form : document.getElementById('formRiver'),
+        selectRiver : document.getElementById('selectRiver'),
         bodyTag : document.getElementsByTagName('body')[0],
-        graph : document.querySelector('#graph'),
+        graph : document.getElementById('graph'),
         images : document.querySelector('.image-wrapper'),
         loading : document.querySelector('.loading-message'),
         graphPeriod : 7,
@@ -223,7 +223,7 @@ var flowApp = {
         // NOTE: not displayed at this time
         if(siteName) {
             flowApp.config.siteName = '<h1>' + flowApp.config.siteName + '</h1>';
-            siteName.innerHTML = flowApp.config.siteName;
+            siteName.textContent = flowApp.config.siteName;
         }
 
         // mapLinkLatLong
@@ -350,7 +350,7 @@ var flowApp = {
             console.error('no flow rate conditions met. flowRate = ' + flowRate);
         }
 
-        document.querySelector('.conditions').innerHTML = conditionText;
+        document.querySelector('.conditions').textContent = conditionText;
     },
 
     saveLatestCfs : function(recentInfo){
