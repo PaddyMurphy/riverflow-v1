@@ -138,7 +138,6 @@ var flowApp = {
             flowApp.config.riverLocation +
             flowApp.config.params;
 
-        // return the graph and photos before hitting yahoo pipes
         // display the graph
         flowApp.displayGraph();
         // build the flickr tags and return the images
@@ -177,9 +176,10 @@ var flowApp = {
             var timeHours = d.toLocaleTimeString();
 
             // compare todays date with the latest returned time
-            if (todaysDate === timeDate) {
-                timeDate = 'Today';
-            }
+            // TODO: this logic is flawed, should return time and format from localStorage
+            // if (todaysDate === timeDate) {
+            //     timeDate = 'Today';
+            // }
             flowApp.config.latestTime = timeDate + ' at ' + timeHours;
 
             // save the name,cfs and display
@@ -292,6 +292,7 @@ var flowApp = {
                     var photo = '<img src="' + square + '" />';
                     // add photo to the docFrag
                     $("<a/>").attr("href", photoLarge)
+                        .attr('rel', 'prefetch')
                         .attr('data-photohref', photoHref)
                         .attr('data-largeurl', photoLarge)
                         .attr('data-lightbox','kayaking')
@@ -367,6 +368,7 @@ var flowApp = {
         }
 
         // show the latests value first
+        // console.log(localStorage.recentInfo);
         document.querySelector('.recentValueWrapper').innerHTML = localStorage.recentInfo;
 
     }

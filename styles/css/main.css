@@ -397,6 +397,7 @@ html {
 }
 .tile-group .tile {
   flex: 1 100%;
+  -webkit-flex: 1 100%;
 }
 .tile-group .tile:first-child {
   border-left: 0;
@@ -511,10 +512,12 @@ html {
   display: -ms-flexbox;
   display: -ms-flex;
   display: flex;
+  -webkit-flex-flow: row wrap;
   flex-flow: row wrap;
   font-size: 0;
 }
 .image-wrapper a {
+  -webkit-flex: auto;
   flex: auto;
   overflow: hidden;
 }
@@ -546,6 +549,7 @@ abbr {
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (max-width: 480px) {
   .tile-group {
+    -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
   }
   .recentValueWrapper {
@@ -557,6 +561,7 @@ abbr {
     image-rendering: auto;
   }
   .image-wrapper a {
+    -webkit-flex: 0 1 50%;
     flex: 0 1 50%;
   }
   .image-wrapper img {
@@ -566,10 +571,12 @@ abbr {
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (min-width: 481px) and (max-width: 780px) {
   .tile-group {
+    -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
   }
   .conditions,
   .flowRate {
+    -webkit-flex: 2 50% !important;
     flex: 2 50% !important;
   }
 }

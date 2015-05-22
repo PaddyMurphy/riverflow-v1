@@ -38,6 +38,7 @@ html {
 
 	.tile {
 		flex: 1 100%;
+		-webkit-flex: 1 100%;
 
 		&:first-child {
 			border-left: 0;
@@ -175,10 +176,13 @@ html {
 .image-wrapper {
 	.flex-display();
 
+	-webkit-flex-flow: row wrap;
 	flex-flow: row wrap;
+
 	font-size: 0;
 
 	a {
+		-webkit-flex: auto;
 		flex: auto;
 		//max-height: 155px;
 		overflow: hidden;
@@ -229,6 +233,7 @@ and (max-width : 480px) {
 	// wrap recent values to next line
 	// show conditions and value beside each other
 	.tile-group {
+		-webkit-flex-wrap: wrap;
 		flex-wrap: wrap;
 	}
 	.conditions,
@@ -249,6 +254,7 @@ and (max-width : 480px) {
 	// image gallery
 	.image-wrapper {
 		a {
+			-webkit-flex: 0 1 50%; // keep 2 columns on mobile
 			flex: 0 1 50%; // keep 2 columns on mobile
 		}
 		img {
@@ -263,11 +269,13 @@ and (min-width : 481px)
 and (max-width : 780px) {
 	// wrap recent values to next line
 	.tile-group {
+		-webkit-flex-wrap: wrap;
 		flex-wrap: wrap;
 	}
 	.conditions,
 	.flowRate {
 		//background: pink;
+		-webkit-flex: 2 50% !important;
 		flex: 2 50% !important; // puts history under conditions & CFS
 	}
 }
